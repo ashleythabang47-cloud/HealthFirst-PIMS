@@ -1,6 +1,11 @@
+package dao;
+
 import java.sql.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import database.DBConnection;
+import models.Medicine;
 
 /**
  * Handles all database operations for the medicines table:

@@ -1,7 +1,10 @@
+package dao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import database.DBConnection;
+import models.User;
 
 /**
  * Handles all database operations for the users table:
