@@ -30,11 +30,10 @@ public class AdminDashboard extends JFrame {
         add(welcomeLabel, BorderLayout.NORTH);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        // Placeholder tabs remain for SupplierPanel, UserPanel, and
-        // ReportsPanel until those are built.
+        // Placeholder tab remains for ReportsPanel until that's built.
         tabbedPane.addTab("Manage Medicines", new MedicinePanel());
-        tabbedPane.addTab("Manage Suppliers", new JPanel());
-        tabbedPane.addTab("Manage Users", new JPanel());
+        tabbedPane.addTab("Manage Suppliers", new SupplierPanel());
+        tabbedPane.addTab("Manage Users", new UserPanel());
         tabbedPane.addTab("Reports", new JPanel());
 
         add(tabbedPane, BorderLayout.CENTER);
