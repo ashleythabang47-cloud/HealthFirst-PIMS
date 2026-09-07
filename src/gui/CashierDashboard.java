@@ -30,9 +30,8 @@ public class CashierDashboard extends JFrame {
         add(welcomeLabel, BorderLayout.NORTH);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        // Placeholder tabs - swap these for POSPanel and a stock-check
-        // panel once those are built.
-        tabbedPane.addTab("Point of Sale", new JPanel());
+        // Placeholder tab remains for Stock Check until that's built.
+        tabbedPane.addTab("Point of Sale", new POSPanel(loggedInUser));
         tabbedPane.addTab("Stock Check", new JPanel());
 
         add(tabbedPane, BorderLayout.CENTER);
