@@ -8,7 +8,6 @@ import java.awt.*;
 /**
  * Cashier dashboard shown after a successful Cashier login.
  * The POS panel (checkout, cart, billing) and Stock Check panel
- * will be added here as those modules are built.
  */
 public class CashierDashboard extends JFrame {
 
@@ -30,9 +29,8 @@ public class CashierDashboard extends JFrame {
         add(welcomeLabel, BorderLayout.NORTH);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        // Placeholder tab remains for Stock Check until that's built.
         tabbedPane.addTab("Point of Sale", new POSPanel(loggedInUser));
-        tabbedPane.addTab("Stock Check", new JPanel());
+        tabbedPane.addTab("Stock Check", new StockCheckPanel());
 
         add(tabbedPane, BorderLayout.CENTER);
     }
