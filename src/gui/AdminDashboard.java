@@ -8,7 +8,6 @@ import java.awt.*;
 /**
  * Admin dashboard shown after a successful Admin login.
  * Tabs for Manage Medicines, Manage Suppliers, Manage Users, and Reports
- * will be added here as those modules are built.
  */
 public class AdminDashboard extends JFrame {
 
@@ -30,11 +29,10 @@ public class AdminDashboard extends JFrame {
         add(welcomeLabel, BorderLayout.NORTH);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        // Placeholder tab remains for ReportsPanel until that's built.
         tabbedPane.addTab("Manage Medicines", new MedicinePanel());
         tabbedPane.addTab("Manage Suppliers", new SupplierPanel());
         tabbedPane.addTab("Manage Users", new UserPanel());
-        tabbedPane.addTab("Reports", new JPanel());
+        tabbedPane.addTab("Reports", new ReportsPanel());
 
         add(tabbedPane, BorderLayout.CENTER);
     }

@@ -21,7 +21,7 @@ public class SalesDAO {
      * Processes a checkout: creates the sale header, all line items,
      * and decrements medicine stock - as a single transaction.
      *
-     * @param userId    the cashier processing the sale
+     * @param userId  the cashier processing the sale
      * @param cartItems the items in the cart (medicineId, quantity, priceAtSale set on each)
      * @return the generated sale_id if successful, or -1 if the transaction failed
      */
@@ -131,7 +131,6 @@ public class SalesDAO {
         return list;
     }
 
-    /** Used by the Bill window and the Item-Wise report - joins in the medicine name. */
     public List<SaleItem> getItemsForSale(int saleId) {
         List<SaleItem> list = new ArrayList<>();
         String sql = "SELECT si.*, m.name AS medicine_name FROM sale_items si " +
@@ -150,6 +149,65 @@ public class SalesDAO {
                 item.setQuantitySold(rs.getInt("quantity_sold"));
                 item.setPriceAtSale(rs.getBigDecimal("price_at_sale"));
                 list.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static class SaleSummary {
+        public int saleId;
+        public Timestamp saleDate;
+        public String cashierName;
+        public BigDecimal totalAmount;
+    }
+
+    public List<SaleSummary> getSalesSummary() {
+        List<SaleSummary> list = new ArrayList<>();
+        String sql = "SELECT s.sale_id, s.sale_date, s.total_amount, u.full_name " +
+                "FROM sales s JOIN users u ON s.user_id = u.user_id " +
+                "ORDER BY s.sale_date DESC";
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                SaleSummary row = new SaleSummary();
+                row.saleId = rs.getInt("sale_id");
+                row.saleDate = rs.getTimestamp("sale_date");
+                row.totalAmount = rs.getBigDecimal("total_amount");
+                row.cashierName = rs.getString("full_name");
+                list.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static class ItemWiseSummary {
+        public String medicineName;
+        public int totalQuantitySold;
+        public BigDecimal totalRevenue;
+    }
+
+    public List<ItemWiseSummary> getItemWiseSummary() {
+        List<ItemWiseSummary> list = new ArrayList<>();
+        String sql = "SELECT m.name, SUM(si.quantity_sold) AS total_qty, " +
+                "SUM(si.quantity_sold * si.price_at_sale) AS total_revenue " +
+                "FROM sale_items si JOIN medicines m ON si.medicine_id = m.medicine_id " +
+                "GROUP BY m.medicine_id, m.name ORDER BY total_revenue DESC";
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                ItemWiseSummary row = new ItemWiseSummary();
+                row.medicineName = rs.getString("name");
+                row.totalQuantitySold = rs.getInt("total_qty");
+                row.totalRevenue = rs.getBigDecimal("total_revenue");
+                list.add(row);
             }
         } catch (SQLException e) {
             e.printStackTrace();
